@@ -1,6 +1,14 @@
 import io
 from flask import Flask, redirect, render_template, request, session, jsonify, url_for, send_from_directory, send_file
 from google.cloud import storage
+from datetime import datetime
+from pymongo import MongoClient
+
+# Initialize MongoDB client
+mongo_client = MongoClient(
+    'mongodb+srv://amedikusettor:Skaq0084@myflixproject.soxjrzv.mongodb.net/?retryWrites=true&w=majority')
+db = mongo_client['recommendationInput']  # Change to the new database name
+selected_videos_collection = db['selectedVideos']
 
 app = Flask(__name__)
 
@@ -54,7 +62,7 @@ def list_videos():
     # Initialize Google Cloud Storage client
     client = storage.Client()
 
-    # Get the bucket and list all objects (videos) in the specified folder
+    # Get the bucket and list all objects (videos) in the speci                                     fied folder
     bucket = client.get_bucket(BUCKET_NAME)
     blobs = bucket.list_blobs(prefix=BUCKET_FOLDER)
 
@@ -84,5 +92,23 @@ def get_video(video_name):
     video_io = io.BytesIO(video_data)
 
     return send_file(video_io, mimetype='video/mp4', as_attachment=True, download_name=video_name)
+
+
+@app.route('/log-video', methods=['POST'])
+def log_video():
+    if request.method == 'POST':
+        data = request.get_json()
+        video_name = data.get('videoName')
+        timestamp = datetime.utcnow()
+
+        # Log the selected video in MongoDB
+        selected_videos_collection.insert_one({
+            'video_name': video_name,
+            'timestamp': timestamp
+        })
+
+        return jsonify({'message': 'Video logged successfully'})
+
+
 if __name__ == '__main__':
     app.run(debug=True,port=5001)

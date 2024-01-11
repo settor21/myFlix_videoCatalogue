@@ -35,6 +35,8 @@
         <div class="video-item" onclick="playVideo('{{ video }}')">
             <img src="{{ url_for('static', filename='default.png') }}" alt="Thumbnail">
             <p>{{ video }}</p>
+            <!-- Add a data attribute to store the video filename -->
+            <div data-video="{{ video }}"></div>
         </div>
         {% endfor %}
     </div>
@@ -56,6 +58,20 @@
 
             // Show the video modal
             videoModal.style.display = 'block';
+
+            // Log the selected video on the client side
+            logSelectedVideo(videoName);
+        }
+
+        function logSelectedVideo(videoName) {
+            // Send an AJAX request to your Flask server to log the selected video
+            fetch('/log-video', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ videoName: videoName }),
+            });
         }
     </script>
 </body>
