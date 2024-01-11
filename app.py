@@ -20,15 +20,26 @@ def check_authentication():
             return redirect(url_for('login'))
 
 
-@app.route('/home')
+@app.route('/ad-tier')
+def ad_tier():
+    # List all objects (videos) in the specified Google Cloud Storage bucket folder
+    videos = list_videos()
+
+    # Each row will contain 4 videos
+    rows_of_videos = [videos[i:i + 4] for i in range(0, len(videos), 4)]
+
+    return render_template('home_ads.html', rows_of_videos=rows_of_videos)
+
+
+@app.route('/paid-tier')
 def home():
     # List all objects (videos) in the specified Google Cloud Storage bucket folder
     videos = list_videos()
 
     # Each row will contain 4 videos
-    rows_of_videos = [videos[i:i+4] for i in range(0, len(videos), 4)]
 
-    return render_template('home.html', rows_of_videos=rows_of_videos)
+    rows_of_videos = [videos[i:i+4] for i in range(0, len(videos), 4)]
+    return render_template('home_paid.html', rows_of_videos=rows_of_videos)
 
 
 @app.route('/api/videos')

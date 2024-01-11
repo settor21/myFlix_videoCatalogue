@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyFlix - Home</title>
+    <style>
+        .video-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .video-item {
+            width: 23%;
+            /* Adjust as needed */
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .video-item img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+
+    <!-- Google AdSense script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7157717307583683"
+        crossorigin="anonymous"></script>
+    
+    
+
+</head>
+
+<body>
+    <h2>Video Catalogue</h2>
+    <!-- Google AdSense ad unit -->
+    <div class="ad-banner">
+        <!-- Ad unit code provided by Google AdSense -->
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7157717307583683" data-ad-slot="7618840800"
+            data-ad-format="auto" data-full-width-responsive="true"></ins>
+    </div>
+    <!-- Placeholder message if the ad is not loaded -->
+    <div class="ad-banner-placeholder">
+        Ads will load here
+    </div>
+
+
+    {% for row in rows_of_videos %}
+    <div class="video-row">
+        {% for video in row %}
+        <div class="video-item" onclick="playVideo('{{ video }}')">
+            <img src="{{ url_for('static', filename='default.png') }}" alt="Thumbnail">
+            <p>{{ video }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <div id="video-modal" style="display: none;">
+        <video id="video-player" width="640" height="360" controls>
+            <!-- Video source will be added dynamically -->
+        </video>
+    </div>
+
+    <script>
+        function playVideo(videoName) {
+            var videoPlayer = document.getElementById('video-player');
+            var videoModal = document.getElementById('video-modal');
+
+            // Set the video source dynamically
+            videoPlayer.src = '/videos/' + videoName;
+
+            // Show the video modal
+            videoModal.style.display = 'block';
+        }
+    </script>
+
+    <!-- Ad unit code provided by Google AdSense -->
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</body>
+
+</html>
