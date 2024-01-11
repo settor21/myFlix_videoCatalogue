@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyFlix - Home</title>
+    <style>
+        .video-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .video-item {
+            width: 23%;
+            /* Adjust as needed */
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .video-item img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Video Catalogue</h2>
+
+    {% for row in rows_of_videos %}
+    <div class="video-row">
+        {% for video in row %}
+        <div class="video-item" onclick="playVideo('{{ video }}')">
+            <img src="{{ url_for('static', filename='default.png') }}" alt="Thumbnail">
+            <p>{{ video }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <div id="video-modal" style="display: none;">
+        <video id="video-player" width="640" height="360" controls>
+            <!-- Video source will be added dynamically -->
+        </video>
+    </div>
+
+    <script>
+        function playVideo(videoName) {
+            var videoPlayer = document.getElementById('video-player');
+            var videoModal = document.getElementById('video-modal');
+
+            // Set the video source dynamically
+            videoPlayer.src = '/videos/' + videoName;
+
+            // Show the video modal
+            videoModal.style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
