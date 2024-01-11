@@ -12,8 +12,6 @@ BUCKET_FOLDER = 'ad-tier'
 app.secret_key = 'your_secret_key'
 
 # Check if the user is authenticated before processing each request
-
-
 @app.before_request
 def check_authentication():
     if request.endpoint and 'videoCatalogue' in request.endpoint:
