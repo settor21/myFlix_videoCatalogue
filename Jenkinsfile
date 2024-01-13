@@ -23,10 +23,11 @@ pipeline {
             steps {
                 script {
                     sh 'echo Packaging files ...'
-                    sh 'rsync -av . ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}/'
-                    sh 'echo Files transferred to server. Preparing to dockerize application ...'
-                    sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${PROD_SERVER} 'cd myflix/video-catalogue && ls -l'"
-                    sh 'echo Repo unloaded on Prod. Server. Preparing to dockerize application ...'
+                    sh 'tar -czf videocatalogue_files.tar.gz *'
+                    sh "scp -o StrictHostKeyChecking=no videocatalogue_files.tar.gz ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
+                    sh 'echo Files transferred to server. Unpacking ...'
+                    sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${PROD_SERVER} 'pwd && cd myflix/video-catalogue && tar -xzf videocatalogue_files.tar.gz && ls -l'"
+                    sh 'echo Repo unloaded on Prod. Server. Preparing to dockerize application ..'
                 }
             }
         }
