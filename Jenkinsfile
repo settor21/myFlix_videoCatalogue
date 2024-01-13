@@ -22,7 +22,7 @@ pipeline {
         stage('Deploy Repo to Prod. Server') {
             steps {
                 script {
-                    sh 'echo Packaging files ....'
+                    sh 'echo Packaging files ...'
                     sh 'tar -czf videocatalogue_files.tar.gz *'
                     sh "scp -o StrictHostKeyChecking=no videocatalogue_files.tar.gz ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
                     sh 'echo Files transferred to server. Unpacking ...'
