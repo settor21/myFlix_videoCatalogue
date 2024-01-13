@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Load Code to Workspace') {
             steps {
-                // This step automatically checks out the code into the workspace
+                // This step automatically checks out the code into the workspace.
                 checkout scm             
             }
         }
