@@ -44,8 +44,9 @@ pipeline {
         stage('Redeploy Container to Web') {
             steps {
                 script {
-                    sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${PROD_SERVER} 'cd myflix/video-catalogue && docker stop ${DOCKER_CONTAINER_NAME}'"
-                    sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${PROD_SERVER} 'cd myflix/video-catalogue && docker rm ${DOCKER_CONTAINER_NAME}'"
+                    sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${PROD_SERVER} 'cd myflix/video-catalogue && docker ps -q --filter name=${DOCKER_CONTAINER_NAME} | xargs -r docker stop'"
+                    sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${PROD_SERVER} 'cd myflix/video-catalogue && docker ps -q --filter name=${DOCKER_CONTAINER_NAME} | xargs -r docker rm'"
+
                     sh "echo Container stopped and removed. Preparing to redeploy new version"
                     sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${PROD_SERVER} 'cd myflix/video-catalogue && docker run -d -p ${DOCKER_HOST_PORT}:${DOCKER_CONTAINER_PORT} --name ${DOCKER_CONTAINER_NAME} ${DOCKER_IMAGE_NAME}'"
                     sh "echo videoCatalogue Microservice Deployed!"
