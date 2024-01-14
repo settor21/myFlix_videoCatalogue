@@ -24,7 +24,16 @@ pipeline {
                 script {
                     sh 'echo Packaging files ...'
                     sh 'tar -czf videocatalogue_files.tar.gz *'
-                    sh "scp -o StrictHostKeyChecking=no videocatalogue_files.tar.gz ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
+                    // sh "scp -o StrictHostKeyChecking=no videocatalogue_files.tar.gz ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
+                    sh "scp -o StrictHostKeyChecking=no Dockerfile ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
+                    sh "scp -o StrictHostKeyChecking=no devopsfinalproject-4d723fcf8c7e.json ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
+                    sh "scp -o StrictHostKeyChecking=no requirements.txt ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
+                    sh "scp -o StrictHostKeyChecking=no app.py ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
+            
+                    sh "scp -o StrictHostKeyChecking=no templates/home_ads.html ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}/templates"
+                    sh "scp -o StrictHostKeyChecking=no templates/home_paid.html ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}/templates"
+                    // sh "scp -o StrictHostKeyChecking=no Dockerfile ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
+                    // sh "scp -o StrictHostKeyChecking=no Dockerfile ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
                     sh 'echo Files transferred to server. Unpacking ...'
                     sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${PROD_SERVER} 'pwd && cd myflix/video-catalogue && tar -xzf videocatalogue_files.tar.gz && ls -l'"
                     sh 'echo Repo unloaded on Prod. Server. Preparing to dockerize application ..'
