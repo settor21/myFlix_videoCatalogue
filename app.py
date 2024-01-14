@@ -3,6 +3,10 @@ from flask import Flask, redirect, render_template, request, session, jsonify, u
 from google.cloud import storage
 from datetime import datetime
 from pymongo import MongoClient
+import ssl
+
+# Set this before making the connection
+ssl._create_default_https_context = ssl._create_unverified_context
 
 # Initialize MongoDB client
 mongo_client = MongoClient(
