@@ -14,8 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN apt-get update && apt-get install -y openssl
 
 # Copy the MongoDB certificate and key into the container
-COPY /home/amedikusettor/mongoAuth/mongodb-cert.pem /app
-COPY /home/amedikusettor/mongoAuth/mongodb-key.pem /app
+COPY /home/amedikusettor/mongoAuth/mongodb-cert.pem /app/mongodb-cert.pem
+COPY /home/amedikusettor/mongoAuth/mongodb-key.pem /app/mongodb-key.pem
 
 # Set environment variable for GCP JSON key
 ENV GOOGLE_APPLICATION_CREDENTIALS=/app/devopsfinalproject-4d723fcf8c7e.json
