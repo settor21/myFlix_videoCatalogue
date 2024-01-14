@@ -3,10 +3,12 @@ pipeline {
 
     environment {
         PROD_USERNAME = 'amedikusettor'
+        PROD_DIR = '/home/amedikusettor/myflix/video-catalogue'
         DOCKER_IMAGE_NAME = 'video-catalogue-deployment'
         DOCKER_CONTAINER_NAME = 'video-catalogue'
         DOCKER_CONTAINER_PORT = '5001'
         DOCKER_HOST_PORT = '5001'
+
     }
 
     stages {
@@ -28,11 +30,20 @@ pipeline {
                     stage('Deploy') {
                         steps {
                             script {
+
                                 sh "echo Packaging files for ${SERVER_IP} ..."
-                                sh 'tar -czf videoCatalogue_files.tar.gz *'
-                                sh "scp -o StrictHostKeyChecking=no videoCatalogue_files.tar.gz ${PROD_USERNAME}@${SERVER_IP}:/home/${PROD_USERNAME}/myflix/video-catalogue"
-                                sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${SERVER_IP} 'pwd && cd myflix/video-catalogue && tar -xzf videoCatalogue_files.tar.gz && ls -l'"
-                                sh 'echo Repo unloaded on ${SERVER_IP}. Preparing to dockerize application ..'
+                                sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${SERVER_IP} 'cd myflix && rm -r video-catalogue || true'"
+                                sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${SERVER_IP} 'cd myflix && mkdir video-catalogue || true && cd video-catalogue && mkdir templates || true'"
+                                sh "scp -o StrictHostKeyChecking=no Dockerfile ${PROD_USERNAME}@${SERVER_IP}:${PROD_DIR}"
+                                sh "scp -o StrictHostKeyChecking=no devopsfinalproject-4d723fcf8c7e.json ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
+                                sh "scp -o StrictHostKeyChecking=no requirements.txt ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
+                                sh "scp -o StrictHostKeyChecking=no app.py ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
+                        
+                                sh "scp -o StrictHostKeyChecking=no templates/home_ads.html ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}/templates"
+                                sh "scp -o StrictHostKeyChecking=no templates/home_paid.html ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}/templates"
+                                
+                                sh 'echo Files transferred to server. Unpacking ...'
+                                sh 'echo Repo unloaded on Prod. Server. Preparing to dockerize application ..'
                             }
                         }
                     }

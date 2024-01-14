@@ -23,6 +23,8 @@ pipeline {
             steps {
                 script {
                     sh 'echo Packaging files ...'
+                    sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${PROD_SERVER} 'cd myflix && rm -r video-catalogue || true'"
+                    sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${PROD_SERVER} 'cd myflix && mkdir video-catalogue || true && cd video-catalogue && mkdir templates'"
                     sh "scp -o StrictHostKeyChecking=no Dockerfile ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
                     sh "scp -o StrictHostKeyChecking=no devopsfinalproject-4d723fcf8c7e.json ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
                     sh "scp -o StrictHostKeyChecking=no requirements.txt ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
