@@ -10,7 +10,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 # Initialize MongoDB client
 mongo_client = MongoClient(
-    'mongodb+srv://amedikusettor:Skaq0084@myflixproject.soxjrzv.mongodb.net/?retryWrites=true&w=majority', ssl_cert_reqs=ssl.CERT_NONE)
+    'mongodb+srv://amedikusettor:Skaq0084@myflixproject.soxjrzv.mongodb.net/?retryWrites=true&w=majority&?tls=true&tlsAllowInvalidCertificates=true')
 db = mongo_client['recommendationInput']  # Change to the new database name
 selected_videos_collection = db['selectedVideos']
 
