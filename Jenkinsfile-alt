@@ -35,12 +35,12 @@ pipeline {
                                 sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${SERVER_IP} 'cd myflix && rm -r video-catalogue || true'"
                                 sh "ssh -o StrictHostKeyChecking=no ${PROD_USERNAME}@${SERVER_IP} 'cd myflix && mkdir video-catalogue || true && cd video-catalogue && mkdir templates || true'"
                                 sh "scp -o StrictHostKeyChecking=no Dockerfile ${PROD_USERNAME}@${SERVER_IP}:${PROD_DIR}"
-                                sh "scp -o StrictHostKeyChecking=no devopsfinalproject-4d723fcf8c7e.json ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
-                                sh "scp -o StrictHostKeyChecking=no requirements.txt ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
-                                sh "scp -o StrictHostKeyChecking=no app.py ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}"
+                                sh "scp -o StrictHostKeyChecking=no devopsfinalproject-4d723fcf8c7e.json ${PROD_USERNAME}@${SERVER_IP}:${PROD_DIR}"
+                                sh "scp -o StrictHostKeyChecking=no requirements.txt ${PROD_USERNAME}@${SERVER_IP}:${PROD_DIR}"
+                                sh "scp -o StrictHostKeyChecking=no app.py ${PROD_USERNAME}@${SERVER_IP}:${PROD_DIR}"
                         
-                                sh "scp -o StrictHostKeyChecking=no templates/home_ads.html ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}/templates"
-                                sh "scp -o StrictHostKeyChecking=no templates/home_paid.html ${PROD_USERNAME}@${PROD_SERVER}:${PROD_DIR}/templates"
+                                sh "scp -o StrictHostKeyChecking=no templates/home_ads.html ${PROD_USERNAME}@${SERVER_IP}:${PROD_DIR}/templates"
+                                sh "scp -o StrictHostKeyChecking=no templates/home_paid.html ${PROD_USERNAME}@${SERVER_IP}:${PROD_DIR}/templates"
                                 
                                 sh 'echo Files transferred to server. Unpacking ...'
                                 sh 'echo Repo unloaded on Prod. Server. Preparing to dockerize application ..'
