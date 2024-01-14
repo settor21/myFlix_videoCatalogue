@@ -3,16 +3,18 @@ from flask import Flask, redirect, render_template, request, session, jsonify, u
 from google.cloud import storage
 from datetime import datetime
 from pymongo import MongoClient
-import ssl
+import ssl,os
+# MongoDB connection settings
+mongo_uri = 'mongodb+srv://amedikusettor:Skaq0084@myflixproject.soxjrzv.mongodb.net/?retryWrites=true&w=majority'
+ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+ssl_context.load_cert_chain(certfile=os.getenv(
+    'MONGODB_CERT_PATH'), keyfile=os.getenv('MONGODB_KEY_PATH'))
 
-# Set this before making the connection
-ssl._create_default_https_context = ssl._create_unverified_context
-
-# Initialize MongoDB client
-mongo_client = MongoClient(
-    'mongodb+srv://amedikusettor:Skaq0084@myflixproject.soxjrzv.mongodb.net/?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE')
+# Create MongoClient with SSL settings
+mongo_client = MongoClient(mongo_uri, ssl=True, ssl_context=ssl_context)
 db = mongo_client['recommendationInput']  # Change to the new database name
 selected_videos_collection = db['selectedVideos']
+
 
 app = Flask(__name__)
 
