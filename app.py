@@ -3,16 +3,20 @@ from flask import Flask, redirect, render_template, request, session, jsonify, u
 from google.cloud import storage
 from datetime import datetime
 from pymongo import MongoClient
-
-
+from urllib.parse import quote_plus
 # Initialize MongoDB client
-
 username = 'amedikusettor'
 password = 'Praisehim69%'
 
-# Replace '35.239.170.49' with your MongoDB server's IP address
-mongo_client = MongoClient( f'mongodb://{username}:{password}@35.239.170.49:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.1'
-)
+# Escape the username and password
+escaped_username = quote_plus(username)
+escaped_password = quote_plus(password)
+
+# Construct the MongoDB URI with escaped username and password
+mongo_uri = f'mongodb://{escaped_username}:{escaped_password}@35.239.170.49:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.1'
+
+# Create the MongoClient
+mongo_client = MongoClient(mongo_uri)
 
 db = mongo_client['userInput']  # Change to the new database name
 selected_videos_collection = db['selectedVideos']
