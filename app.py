@@ -11,8 +11,7 @@ username = 'amedikusettor'
 password = 'Praisehim69%'
 
 # Replace '35.239.170.49' with your MongoDB server's IP address
-mongo_client = MongoClient(
-    'mongodb://your_username:your_password@35.239.170.49:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.1'
+mongo_client = MongoClient( f'mongodb://{username}:{password}@35.239.170.49:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.1'
 )
 
 db = mongo_client['userInput']  # Change to the new database name
