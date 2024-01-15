@@ -28,8 +28,8 @@
     <!-- Google AdSense script -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7157717307583683"
         crossorigin="anonymous"></script>
-    
-    
+
+
 
 </head>
 
@@ -38,8 +38,8 @@
     <!-- Google AdSense ad unit -->
     <div class="ad-banner">
         <!-- Ad unit code provided by Google AdSense -->
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7157717307583683" data-ad-slot="7618840800"
-            data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7157717307583683"
+            data-ad-slot="7618840800" data-ad-format="auto" data-full-width-responsive="true"></ins>
     </div>
     <!-- Placeholder message if the ad is not loaded -->
     <div class="ad-banner-placeholder">
@@ -76,6 +76,17 @@
             videoModal.style.display = 'block';
             // Log the selected video on the client side
             logSelectedVideo(videoName);
+        }
+
+        function logSelectedVideo(videoName) {
+            // Send an AJAX request to your Flask server to log the selected video
+            fetch('/log-video', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ videoName: videoName }),
+            });
         }
     </script>
 
