@@ -6,9 +6,8 @@ from pymongo import MongoClient
 
 
 # Initialize MongoDB client
-mongo_client = MongoClient(
-    'mongodb+srv://amedikusettor:Skaq0084@myflixproject.soxjrzv.mongodb.net/?retryWrites=true&w=majority')
-db = mongo_client['recommendationInput']  # Change to the new database name
+mongo_client = MongoClient('mongodb://35.239.170.49:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.1')
+db = mongo_client['userInput']  # Change to the new database name
 selected_videos_collection = db['selectedVideos']
 
 app = Flask(__name__)
