@@ -57,7 +57,7 @@ def ad_tier():
 
     # Each row will contain 4 videos
     rows_of_videos = [ad_tier_videos[i:i + 4]
-                      for i in range(0, len(ad_tier_videos), 4)]
+                      for i in range(1, len(ad_tier_videos), 4)]
 
     return render_template('home_ads.html', rows_of_videos=rows_of_videos)
 

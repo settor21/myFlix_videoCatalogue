@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyFlix - Home</title>
+    <title>Watch Movies</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://storage.googleapis.com/myflix-staticfiles/style/browsePage_style.css" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7157717307583683"
+        crossorigin="anonymous"></script>
     <style>
         .video-row {
             display: flex;
@@ -20,11 +24,50 @@
         }
 
         .video-item img {
-            width: 35%;
+            width: 100%;
             height: auto;
         }
-    </style>
 
+        /* Add this to your existing CSS or create a new style file */
+        .user-dropdown {
+            display: inline-block;
+            position: relative;
+            margin-left: auto;
+        }
+
+        .dropbtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .user-dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
     <!-- Google AdSense script -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7157717307583683"
         crossorigin="anonymous"></script>
@@ -34,29 +77,218 @@
 </head>
 
 <body>
-    <h2>Video Catalogue</h2>
-    <!-- Google AdSense ad unit -->
-    <div class="ad-banner">
-        <!-- Ad unit code provided by Google AdSense -->
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7157717307583683"
-            data-ad-slot="7618840800" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    </div>
-    <!-- Placeholder message if the ad is not loaded -->
-    <div class="ad-banner-placeholder">
-        Ads will load here
-    </div>
 
 
-    {% for row in rows_of_videos %}
-    <div class="video-row">
-        {% for video in row %}
-        <div class="video-item" onclick="playVideo('{{ video }}')">
-            <img src="{{ url_for('static', filename='default.png') }}" alt="Thumbnail">
-            <p>{{ video }}</p>
+    <header class="showcase-header" id="myflixHeader">
+        <nav class="showcase-navbar">
+            <a href="/" class="netflix-logo">
+                <img src="https://storage.googleapis.com/myflix-staticfiles/img/main/logo.png" alt="Netflix Logo"
+                    class="logo" />
+            </a>
+            <div class="nav-section">
+                <a class="nav-element flims" active>Films</a>
+            </div>
+            <div class="nav-section">
+                <a class="nav-element series">Series</a>
+            </div>
+
+            <!-- Dropdown for user options -->
+            <div class="user-dropdown">
+                <button class="dropbtn"> <span class="fa fa-user"></span>User Options</button>
+                <div class="dropdown-content">
+                    <a href="/renew">Renew Subscription</a>
+                    <a href="/logout">Logout</a>
+                </div>
+            </div>
+
+        </nav>
+
+        <div class="feature-movie">
+            <h1 class="feature-movie-title">Watch Joker Now</h1>
+            <p class="feature-movie-discription">
+                Forever alone in a crowd, failed comedian Arthur Fleck seeks
+                connection as he walks the streets of Gotham City. Arthur wears two
+                masks, the one he paints for his day job as a clown, and the guise he
+                projects in a futile attempt to feel like he is part of the world
+                around him.
+            </p>
+            <!-- <button class="play-button">Play</button> -->
         </div>
-        {% endfor %}
+    </header>
+
+
+    <div id="video-modal" style="display: none; text-align: center; position: relative;">
+        <button class="close-button" aria-label="Close alert" type="button" onclick="showHeader()"
+            style="font-size: 30px; position: fixed; top: 10px; right: 10px; cursor: pointer; z-index: 999;" data-close>
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <video id="video-player" width="640" height="360" controls>
+            <!-- Video source will be added dynamically -->
+        </video>
+        <!-- Google AdSense ad unit -->
+        <div class="ad-banner">
+            <!-- Ad unit code provided by Google AdSense -->
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7157717307583683"
+                data-ad-slot="7618840800" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        </div>
+        <!-- Placeholder message if the ad is not loaded -->
+        <div class="ad-banner-placeholder">
+            Ads will load here
+        </div>
     </div>
-    {% endfor %}
+
+    <div class="all-slides-wrapper flims-slides">
+
+        <div class="flim-slide">
+            <div class="slide-title">Suspense</div>
+            <div class="all-card-slides">
+                {% for video in rows_of_videos[0] %}
+                <div class="card" onclick="playVideo('{{ video.name }}')">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/Suspense{{ video.index }}.jpg"
+                        alt="Drama Image" class="card-img" />
+                    <p style="text-align: center; word-wrap: break-word;">{{ video.name }}</p>
+                    <!-- Add a data attribute to store the video filename -->
+                    <div data-video="{{ video }}"></div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <br>
+        <p> Coming soon.... </p>
+        <br>
+        <div class="flim-slide">
+            <div class="slide-title">Drama</div>
+            <div class="all-card-slides">
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/drama1.jpg" alt="Drama Image"
+                        class="card-img" />
+                </div>
+
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/drama2.jpg" alt="Drama Image"
+                        class="card-img" />
+                </div>
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/drama3.jpg" alt="Drama Image"
+                        class="card-img" />
+                </div>
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/drama4.jpg" alt="Drama Image"
+                        class="card-img" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="flim-slide">
+            <div class="slide-title">Thiller</div>
+            <div class="all-card-slides">
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/thiller1.jpg"
+                        alt="Drama Image" class="card-img" />
+                </div>
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/thiller2.jpg"
+                        alt="Drama Image" class="card-img" />
+                </div>
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/thiller3.jpg"
+                        alt="Drama Image" class="card-img" />
+                </div>
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/thiller4.jpg"
+                        alt="Drama Image" class="card-img" />
+                </div>
+
+            </div>
+        </div>
+
+        <div class="flim-slide">
+            <div class="slide-title">Children</div>
+            <div class="all-card-slides">
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/children1.jpg"
+                        alt="Drama Image" class="card-img" />
+                </div>
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/children2.jpg"
+                        alt="Drama Image" class="card-img" />
+                </div>
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/children3.jpg"
+                        alt="Drama Image" class="card-img" />
+                </div>
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/children4.jpg"
+                        alt="Drama Image" class="card-img" />
+                </div>
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/children5.jpg"
+                        alt="Drama Image" class="card-img" />
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="flim-slide">
+            <div class="slide-title">Romance</div>
+            <div class="all-card-slides">
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/romance1.jpg"
+                        alt="Drama Image" class="card-img" />
+                </div>
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/romance2.jpg"
+                        alt="Drama Image" class="card-img" />
+                </div>
+                <div class="card">
+                    <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/romance3.jpg"
+                        alt="Drama Image" class="card-img" />
+                </div>
+                <!-- <div class="card">
+                                <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/romance4.jpg" alt="Drama Image" class="card-img" />
+                            </div>
+                            <div class="card">
+                                <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/romance5.jpg" alt="Drama Image" class="card-img" />
+                            </div> -->
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    <footer class="footer">
+        <a href="#" class="footer-title">Questions? Call 000-800-040-1843</a>
+        <div class="footer-row">
+            <div class="footer-column">
+                <a href="#" class="footer-link">FAQ</a>
+                <a href="#" class="footer-link">Investor Relations</a>
+                <a href="#" class="footer-link">Privacy</a>
+                <a href="#" class="footer-link">Speed Test</a>
+            </div>
+            <div class="footer-column">
+                <a href="#" class="footer-link">Help Center</a>
+                <a href="#" class="footer-link">Jobs</a>
+                <a href="#" class="footer-link">Cookie Preferences</a>
+                <a href="#" class="footer-link">Legal Notices</a>
+            </div>
+            <div class="footer-column">
+                <a href="#" class="footer-link">Account</a>
+                <a href="#" class="footer-link">Ways to Wactch</a>
+                <a href="#" class="footer-link">Corporate Inforamation</a>
+                <a href="#" class="footer-link">Netflix Originals</a>
+            </div>
+            <div class="footer-column">
+                <a href="#" class="footer-link">Media Center</a>
+                <a href="#" class="footer-link">Terms of Use</a>
+                <a href="#" class="footer-link">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+
+
 
     <div id="video-modal" style="display: none;">
         <video id="video-player" width="640" height="360" controls>
@@ -68,14 +300,21 @@
         function playVideo(videoName) {
             var videoPlayer = document.getElementById('video-player');
             var videoModal = document.getElementById('video-modal');
-
+            var header = document.getElementById("myflixHeader");
+            header.style.display = 'none';
             // Set the video source dynamically
             videoPlayer.src = '/videos/' + videoName;
 
             // Show the video modal
             videoModal.style.display = 'block';
+
             // Log the selected video on the client side
             logSelectedVideo(videoName);
+            // Delay for 5 seconds and then smoothly scroll to the video modal
+            setTimeout(function () {
+                scrollToVideoModal();
+            }, 750);
+
         }
 
         function logSelectedVideo(videoName) {
@@ -87,6 +326,38 @@
                 },
                 body: JSON.stringify({ videoName: videoName }),
             });
+        }
+
+        // Function to scroll to the video modal smoothly
+        function scrollToVideoModal() {
+            var videoModal = document.getElementById('video-modal');
+
+            // Check if the video modal is present
+            if (videoModal) {
+                // Calculate the offset top of the video modal
+                var offsetTop = videoModal.offsetTop;
+
+                // Scroll to the video modal with smooth behavior
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth',
+                });
+            }
+
+        }
+
+        function showHeader() {
+            var x = document.getElementById("myflixHeader");
+            var videoModal = document.getElementById('video-modal');
+            var videoPlayer = document.getElementById('video-player');
+
+            // Pause the video
+            if (!videoPlayer.paused) {
+                videoPlayer.pause();
+            }
+
+            videoModal.style.display = 'none';
+            x.style.display = "block";
         }
     </script>
 
