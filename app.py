@@ -44,7 +44,7 @@ def check_authentication():
 
 @app.route('/logout')
 def logout():
-    return redirect("http://127.0.0.1:5000") #home page from userAccess in docker container
+    return redirect("https://myflix.world") #home page from userAccess in docker container
 
 @app.route('/renew')
 def renew_subscription():
