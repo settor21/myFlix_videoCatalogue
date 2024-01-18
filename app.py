@@ -39,8 +39,16 @@ def check_authentication():
     if request.endpoint and 'videoCatalogue' in request.endpoint:
         # Check if the user is authenticated
         if 'user_id' not in session:
-            return redirect(url_for('login'))
+            return redirect("http://127.0.0.1:5000") #home page from userAccess in docker container
 
+
+@app.route('/logout')
+def logout():
+    return redirect("http://127.0.0.1:5000") #home page from userAccess in docker container
+
+@app.route('/renew')
+def renew_subscription():
+    return render_template('renewSubscription.html')
 
 @app.route('/ad-tier')
 def ad_tier():
@@ -65,7 +73,7 @@ def paid_tier():
 
     # Each row will contain 4 videos
     rows_of_videos = [all_videos[i:i + 4]
-                      for i in range(0, len(all_videos), 4)]
+                      for i in range(1, len(all_videos), 4)]
 
     return render_template('home_paid.html', rows_of_videos=rows_of_videos)
 
@@ -86,10 +94,12 @@ def list_videos(folder):
     bucket = client.get_bucket(BUCKET_NAME)
     blobs = bucket.list_blobs(prefix=folder)
 
-    # Extract video names from blob names (remove folder prefix)
-    videos = [blob.name.split('/')[-1] for blob in blobs]
+    # Extract video names from blob names (remove folder prefix) and include the index
+    videos = [{'name': blob.name.split('/')[-1], 'index': i + 1}
+              for i, blob in enumerate(blobs)]
 
     return videos
+
 
 @app.route('/videos/<path:video_name>')
 def get_video(video_name):
@@ -121,10 +131,10 @@ def log_video():
         timestamp = datetime.utcnow()
 
         # Log the selected video in MongoDB
-        selected_videos_collection.insert_one({
-            'video_name': video_name,
-            'timestamp': timestamp
-        })
+        # selected_videos_collection.insert_one({
+        #     'video_name': video_name,
+        #     'timestamp': timestamp
+        # })
 
         return jsonify({'message': 'Video logged successfully'})
 
