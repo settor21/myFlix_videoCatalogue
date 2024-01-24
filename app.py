@@ -143,6 +143,8 @@ def log_video():
         })
 
         return jsonify({'message': 'Video logged successfully'})
+    
+
 
 
 if __name__ == '__main__':

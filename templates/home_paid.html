@@ -126,7 +126,7 @@
                 <div class="card" onclick="playVideo('{{ video.name }}')">
                     <img src="https://storage.googleapis.com/myflix-staticfiles/img/flims/Suspense{{ video.index }}.jpg"
                         alt="Drama Image" class="card-img" />
-                    <p style="text-align: center; word-wrap: break-word;">{{ video.name }}</p>
+                    <p style="text-align: center; word-wrap: break-word;">{{ video.name | replace('.mp4', '') }}</p>
                     <!-- Add a data attribute to store the video filename -->
                     <div data-video="{{ video }}"></div>
                 </div>
