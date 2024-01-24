@@ -131,10 +131,10 @@ def log_video():
         timestamp = datetime.utcnow()
 
         # Log the selected video in MongoDB
-        # selected_videos_collection.insert_one({
-        #     'video_name': video_name,
-        #     'timestamp': timestamp
-        # })
+        selected_videos_collection.insert_one({
+            'video_name': video_name,
+            'timestamp': timestamp
+        })
 
         return jsonify({'message': 'Video logged successfully'})
 
