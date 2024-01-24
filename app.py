@@ -47,8 +47,10 @@ def check_authentication():
 
 @app.route('/logout')
 def logout():
+    # Remove the session ID from the session
+    session.pop('session_id', None)
     # home page from userAccess in docker container
-    return redirect("http://127.0.0.1:5000")
+    return redirect("https://myflix.world")
 
 
 @app.route('/renew')
