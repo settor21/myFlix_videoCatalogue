@@ -29,29 +29,36 @@ BUCKET_FOLDER = 'ad-tier'
 AD_TIER_FOLDER = 'ad-tier'
 
 PAID_TIER_FOLDER = 'paid-tier'
-
+CURRENT_FOLDER = None
 # Define a secret key for session management
 app.secret_key = 'your_secret_key'
 
 # Check if the user is authenticated before processing each request
+
+
 @app.before_request
 def check_authentication():
     if request.endpoint and 'videoCatalogue' in request.endpoint:
         # Check if the user is authenticated
         if 'user_id' not in session:
-            return redirect("http://127.0.0.1:5000") #home page from userAccess in docker container
+            # home page from userAccess in docker container
+            return redirect("http://127.0.0.1:5000")
 
 
 @app.route('/logout')
 def logout():
-    return redirect("https://myflix.world") #home page from userAccess in docker container
+    # home page from userAccess in docker container
+    return redirect("http://127.0.0.1:5000")
+
 
 @app.route('/renew')
 def renew_subscription():
     return render_template('renewSubscription.html')
 
+
 @app.route('/ad-tier')
 def ad_tier():
+    global CURRENT_FOLDER
     # List all objects (videos) in the 'ad-tier' Google Cloud Storage bucket folder
     ad_tier_videos = list_videos(AD_TIER_FOLDER)
 
@@ -59,23 +66,22 @@ def ad_tier():
     rows_of_videos = [ad_tier_videos[i:i + 4]
                       for i in range(1, len(ad_tier_videos), 4)]
 
+    CURRENT_FOLDER = 'ad-tier'
+
     return render_template('home_ads.html', rows_of_videos=rows_of_videos)
 
 
 @app.route('/paid-tier')
 def paid_tier():
-    # List all objects (videos) in both 'ad-tier' and 'paid-tier' Google Cloud Storage bucket folders
-    ad_tier_videos = list_videos(AD_TIER_FOLDER)
+    global CURRENT_FOLDER
     paid_tier_videos = list_videos(PAID_TIER_FOLDER)
-
-    # Combine the videos from both tiers
-    all_videos = ad_tier_videos + paid_tier_videos
-
     # Each row will contain 4 videos
-    rows_of_videos = [all_videos[i:i + 4]
-                      for i in range(1, len(all_videos), 4)]
+    paid_videos = [paid_tier_videos[i:i + 4]
+                   for i in range(1, len(paid_tier_videos), 4)]
+    all_videos = paid_videos
+    CURRENT_FOLDER = 'paid-tier'
 
-    return render_template('home_paid.html', rows_of_videos=rows_of_videos)
+    return render_template('home_paid.html', rows_of_videos=all_videos)
 
 
 @app.route('/api/videos')
@@ -108,7 +114,7 @@ def get_video(video_name):
     bucket = client.get_bucket(BUCKET_NAME)
 
     # Specify the folder in the bucket where the videos are stored
-    folder = BUCKET_FOLDER
+    folder = CURRENT_FOLDER
 
     # Build the blob path
     blob_path = f'{folder}/{video_name}'
@@ -140,4 +146,4 @@ def log_video():
 
 
 if __name__ == '__main__':
-    app.run(host = "0.0.0.0",debug=True,port=5001)
+    app.run(host="0.0.0.0", debug=True, port=5001)
